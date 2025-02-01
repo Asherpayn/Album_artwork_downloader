@@ -7,19 +7,23 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from PIL import Image
 from io import BytesIO
 
+# File path to store Spotify API credentials persistently
 CREDENTIALS_FILE = os.path.expanduser("~/.spotify_credentials.json")
 
+# Save Spotify API credentials to a file
 def save_credentials(client_id, client_secret):
     credentials = {"client_id": client_id, "client_secret": client_secret}
     with open(CREDENTIALS_FILE, "w") as f:
         json.dump(credentials, f)
 
+# Load Spotify API credentials from a file if available
 def load_credentials():
     if os.path.exists(CREDENTIALS_FILE):
         with open(CREDENTIALS_FILE, "r") as f:
             return json.load(f)
     return None
 
+# Retrieve Spotify API credentials, prompting the user if not saved
 def get_spotify_credentials():
     creds = load_credentials()
     if creds:
@@ -42,12 +46,14 @@ SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET = get_spotify_credentials()
 auth_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+# Test if Spotify API credentials are valid by making a simple request
 def test_credentials():
     try:
         sp.search(q="test", type="album", limit=1)
     except spotipy.exceptions.SpotifyException as e:
         print("Invalid Spotify credentials. Please check your Client ID and Client Secret.")
 
+# Prompt user to choose an album from a list if multiple results are found
 def choose_album(albums):
     if not albums:
         return None
@@ -66,11 +72,13 @@ def choose_album(albums):
     print("Invalid choice. Defaulting to the first album.")
     return albums[0]
 
+# Search Spotify for an album matching the provided name
 def find_closest_album(album_name):
     results = sp.search(q=album_name, type='album', limit=10)
     albums = results['albums']['items']
     return choose_album(albums)
 
+# Download and save the album artwork to the specified location
 def download_album_artwork(album, save_path):
     if album and album['images']:
         image_url = album['images'][0]['url']
@@ -84,12 +92,14 @@ def download_album_artwork(album, save_path):
     else:
         print("No album artwork found.")
 
+# Sanitize a filename by replacing invalid characters
 def sanitize_filename(filename):
     invalid_chars = '<>:"/\\|?*'
     for char in invalid_chars:
         filename = filename.replace(char, '_')
     return filename
 
+# Main program loop that prompts the user for album names and downloads artwork
 def main():
     albumartworks_dir = os.path.expanduser("~/Pictures/albumartworks")
     if not os.path.exists(albumartworks_dir):
