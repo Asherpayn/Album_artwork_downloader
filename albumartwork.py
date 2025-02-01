@@ -6,14 +6,19 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from PIL import Image
 from io import BytesIO
 
+# ANSI color codes
+RED = "\033[91m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 print("Welcome to Album Artwork Downloader!")
 print("This program downloads the album artwork of a given album from Spotify.")
 print("You can type 'exit' to quit the program at any time.")
 print("Please enter the name of the album you'd like to download the artwork for:")
 
 # Spotify API credentials
-SPOTIPY_CLIENT_ID = input("Your spotify client id: ")
-SPOTIPY_CLIENT_SECRET = input("Your spotify client secret: ")
+SPOTIPY_CLIENT_ID = input(GREEN + "Your spotify client id: " + RESET)
+SPOTIPY_CLIENT_SECRET = input(GREEN + "Your spotify client secret: " + RESET)
 
 # Initialize Spotipy client
 auth_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
@@ -33,10 +38,10 @@ def choose_album(albums):
     
     print("Multiple albums found:")
     for idx, album in enumerate(albums):
-        print(f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}")
+        print(RED + f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}" + RESET)
     
     try:
-        choice = int(input("Enter the number of the album you want to select: ")) - 1
+        choice = int(input(GREEN + "Enter the number of the album you want to select: " + RESET)) - 1
         if 0 <= choice < len(albums):
             return albums[choice]
     except ValueError:
@@ -77,7 +82,7 @@ def main():
         print(f"Created directory: {albumartworks_dir}")
     
     while True:
-        album_name = input("Enter the album name (or type 'exit' to quit): ")
+        album_name = input(GREEN + "Enter the album name (or type 'exit' to quit): " + RESET)
         if album_name.lower() == 'exit':
             print("Exiting the program.")
             break
