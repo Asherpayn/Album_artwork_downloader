@@ -24,5 +24,3 @@ after creating the app you will be redirected to the apps dashboard.
 you will see the 
 Client ID: A unique identifier for your app
 Client Secret: A secret key used to authenticate your app with the Spotify API.
-
-Every time you launch the app you will need to provide these details so i would recommend saving them somewhere on your computer.
