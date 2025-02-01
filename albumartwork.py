@@ -22,16 +22,28 @@ def test_credentials():
         print("Invalid Spotify credentials. Please check your Client ID and Client Secret.")
     return
 
+def choose_album(albums):
+    if not albums:
+        return None
+    
+    print("Multiple albums found:")
+    for idx, album in enumerate(albums):
+        print(f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}")
+    
+    try:
+        choice = int(input("Enter the number of the album you want to select: ")) - 1
+        if 0 <= choice < len(albums):
+            return albums[choice]
+    except ValueError:
+        pass
+    
+    print("Invalid choice. Defaulting to the first album.")
+    return albums[0]
+
 def find_closest_album(album_name):
     results = sp.search(q=album_name, type='album', limit=10)
     albums = results['albums']['items']
-    album_names = [album['name'] for album in albums]
-    closest_match, score = process.extractOne(album_name, album_names)
-    if score > 70:  # Only consider matches with a score above 70
-        for album in albums:
-            if album['name'] == closest_match:
-                return album
-    return None
+    return choose_album(albums)
 
 def download_album_artwork(album, save_path):
     if album and album['images']:
@@ -58,6 +70,7 @@ def main():
     if not os.path.exists(albumartworks_dir):
         os.makedirs(albumartworks_dir)
         print(f"Created directory: {albumartworks_dir}")
+    
     while True:
         album_name = input("Enter the album name (or type 'exit' to quit): ")
         if album_name.lower() == 'exit':
@@ -66,7 +79,7 @@ def main():
 
         album = find_closest_album(album_name)
         if album:
-            print(f"Found album: {album['name']} by {album['artists'][0]['name']}")
+            print(f"Selected album: {album['name']} by {album['artists'][0]['name']}")
             # Sanitize the album name to create a safe filename
             safe_album_name = sanitize_filename(album['name'])
             save_path = os.path.expanduser(f"~/Pictures/albumartworks/{safe_album_name}.jpg")
