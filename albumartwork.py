@@ -1,31 +1,52 @@
 import os
 import requests
+import json
 from fuzzywuzzy import process
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from PIL import Image
 from io import BytesIO
 
+CREDENTIALS_FILE = os.path.expanduser("~/.spotify_credentials.json")
+
+def save_credentials(client_id, client_secret):
+    credentials = {"client_id": client_id, "client_secret": client_secret}
+    with open(CREDENTIALS_FILE, "w") as f:
+        json.dump(credentials, f)
+
+def load_credentials():
+    if os.path.exists(CREDENTIALS_FILE):
+        with open(CREDENTIALS_FILE, "r") as f:
+            return json.load(f)
+    return None
+
+def get_spotify_credentials():
+    creds = load_credentials()
+    if creds:
+        print("Using saved Spotify credentials.")
+        return creds["client_id"], creds["client_secret"]
+    
+    client_id = input("Your Spotify Client ID: ")
+    client_secret = input("Your Spotify Client Secret: ")
+    save_credentials(client_id, client_secret)
+    return client_id, client_secret
+
 print("Welcome to Album Artwork Downloader!")
 print("This program downloads the album artwork of a given album from Spotify.")
 print("You can type 'exit' to quit the program at any time.")
-print("Please enter the name of the album you'd like to download the artwork for:")
 
-# Spotify API credentials
-SPOTIPY_CLIENT_ID = input("Your spotify client id: ")
-SPOTIPY_CLIENT_SECRET = input("Your spotify client secret: ")
+# Get Spotify API credentials
+SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET = get_spotify_credentials()
 
 # Initialize Spotipy client
 auth_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
-# Test the credentials
 def test_credentials():
     try:
-        sp.search(q="test", type="album", limit=1)  # Test the credentials
+        sp.search(q="test", type="album", limit=1)
     except spotipy.exceptions.SpotifyException as e:
         print("Invalid Spotify credentials. Please check your Client ID and Client Secret.")
-    return
 
 def choose_album(albums):
     if not albums:
@@ -52,7 +73,7 @@ def find_closest_album(album_name):
 
 def download_album_artwork(album, save_path):
     if album and album['images']:
-        image_url = album['images'][0]['url']  # Get the highest resolution image
+        image_url = album['images'][0]['url']
         response = requests.get(image_url)
         if response.status_code == 200:
             img = Image.open(BytesIO(response.content))
@@ -64,7 +85,6 @@ def download_album_artwork(album, save_path):
         print("No album artwork found.")
 
 def sanitize_filename(filename):
-    # Replace invalid characters with underscores
     invalid_chars = '<>:"/\\|?*'
     for char in invalid_chars:
         filename = filename.replace(char, '_')
@@ -85,7 +105,6 @@ def main():
         album = find_closest_album(album_name)
         if album:
             print(f"Selected album: {album['name']} by {album['artists'][0]['name']}")
-            # Sanitize the album name to create a safe filename
             safe_album_name = sanitize_filename(album['name'])
             save_path = os.path.expanduser(f"~/Pictures/albumartworks/{safe_album_name}.jpg")
             download_album_artwork(album, save_path)
