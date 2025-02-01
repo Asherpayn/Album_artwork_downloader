@@ -71,6 +71,7 @@ def choose_album(albums):
     
     try:
         choice = int(input(GREEN + "Enter the number of the album you want to select: " + RESET)) - 1
+        choice = int(input(GREEN + "Enter the number of the album you want to select: " + RESET)) - 1
         if 0 <= choice < len(albums):
             return albums[choice]
     except ValueError:
@@ -117,6 +118,7 @@ def main():
             print(YELLOW + "Error: Unable to write to .cache file." + RESET)
     
     while True:
+        album_name = input(GREEN + "Enter the album name (or type 'exit' to quit): " + RESET)
         album_name = input(GREEN + "Enter the album name (or type 'exit' to quit): " + RESET)
         if album_name.lower() == 'exit':
             print("Exiting the program.")
