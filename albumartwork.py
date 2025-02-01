@@ -7,6 +7,12 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from PIL import Image
 from io import BytesIO
 
+# ANSI escape codes for color formatting
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RESET = "\033[0m"
+
 # File path to store Spotify API credentials persistently
 CREDENTIALS_FILE = os.path.expanduser("~/.spotify_credentials.json")
 
@@ -30,8 +36,8 @@ def get_spotify_credentials():
         print("Using saved Spotify credentials.")
         return creds["client_id"], creds["client_secret"]
     
-    client_id = input("Your Spotify Client ID: ")
-    client_secret = input("Your Spotify Client Secret: ")
+    client_id = input(GREEN + "Your Spotify Client ID: " + RESET)
+    client_secret = input(GREEN + "Your Spotify Client Secret: " + RESET)
     save_credentials(client_id, client_secret)
     return client_id, client_secret
 
@@ -51,7 +57,7 @@ def test_credentials():
     try:
         sp.search(q="test", type="album", limit=1)
     except spotipy.exceptions.SpotifyException as e:
-        print("Invalid Spotify credentials. Please check your Client ID and Client Secret.")
+        print(YELLOW + "Invalid Spotify credentials. Please check your Client ID and Client Secret." + RESET)
 
 # Prompt user to choose an album from a list if multiple results are found
 def choose_album(albums):
@@ -60,10 +66,11 @@ def choose_album(albums):
     
     print("Multiple albums found:")
     for idx, album in enumerate(albums):
-        print(f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}")
+        color = RED if idx < 10 else RESET
+        print(color + f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}" + RESET)
     
     try:
-        choice = int(input("Enter the number of the album you want to select: ")) - 1
+        choice = int(input(GREEN + "Enter the number of the album you want to select: " + RESET)) - 1
         if 0 <= choice < len(albums):
             return albums[choice]
     except ValueError:
@@ -103,11 +110,14 @@ def sanitize_filename(filename):
 def main():
     albumartworks_dir = os.path.expanduser("~/Pictures/albumartworks")
     if not os.path.exists(albumartworks_dir):
-        os.makedirs(albumartworks_dir)
-        print(f"Created directory: {albumartworks_dir}")
+        try:
+            os.makedirs(albumartworks_dir)
+            print(f"Created directory: {albumartworks_dir}")
+        except OSError:
+            print(YELLOW + "Error: Unable to write to .cache file." + RESET)
     
     while True:
-        album_name = input("Enter the album name (or type 'exit' to quit): ")
+        album_name = input(GREEN + "Enter the album name (or type 'exit' to quit): " + RESET)
         if album_name.lower() == 'exit':
             print("Exiting the program.")
             break
