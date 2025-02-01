@@ -6,6 +6,11 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from PIL import Image
 from io import BytesIO
 
+print("Welcome to Album Artwork Downloader!")
+print("This program downloads the album artwork of a given album from Spotify.")
+print("You can type 'exit' to quit the program at any time.")
+print("Please enter the name of the album you'd like to download the artwork for:")
+
 # Spotify API credentials
 SPOTIPY_CLIENT_ID = input("Your spotify client id: ")
 SPOTIPY_CLIENT_SECRET = input("Your spotify client secret: ")
