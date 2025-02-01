@@ -14,6 +14,14 @@ SPOTIPY_CLIENT_SECRET = input("Your spotify client secret: ")
 auth_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+# Test the credentials
+def test_credentials():
+    try:
+        sp.search(q="test", type="album", limit=1)  # Test the credentials
+    except spotipy.exceptions.SpotifyException as e:
+        print("Invalid Spotify credentials. Please check your Client ID and Client Secret.")
+    return
+
 def find_closest_album(album_name):
     results = sp.search(q=album_name, type='album', limit=10)
     albums = results['albums']['items']
@@ -46,6 +54,10 @@ def sanitize_filename(filename):
     return filename
 
 def main():
+    albumartworks_dir = os.path.expanduser("~/Pictures/albumartworks")
+    if not os.path.exists(albumartworks_dir):
+        os.makedirs(albumartworks_dir)
+        print(f"Created directory: {albumartworks_dir}")
     while True:
         album_name = input("Enter the album name (or type 'exit' to quit): ")
         if album_name.lower() == 'exit':
@@ -63,4 +75,7 @@ def main():
             print("No matching album found.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nExiting the program.")
