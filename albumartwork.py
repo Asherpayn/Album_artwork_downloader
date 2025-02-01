@@ -58,6 +58,7 @@ def main():
     if not os.path.exists(albumartworks_dir):
         os.makedirs(albumartworks_dir)
         print(f"Created directory: {albumartworks_dir}")
+    
     while True:
         album_name = input("Enter the album name (or type 'exit' to quit): ")
         if album_name.lower() == 'exit':
