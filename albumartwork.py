@@ -33,7 +33,7 @@ def load_credentials():
 def get_spotify_credentials():
     creds = load_credentials()
     if creds:
-        print("Using saved Spotify credentials.")
+        print("(Using saved Spotify credentials.)")
         return creds["client_id"], creds["client_secret"]
     
     client_id = input(GREEN + "Your Spotify Client ID: " + RESET)
