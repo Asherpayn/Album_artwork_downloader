@@ -2,7 +2,7 @@
 A program that allows you to download album artwork from spotify, usefull for adding artwork to mp3 files or albums on ipods.
 
 **my attempt at "vibe coding"**
-
+I created this as i needed to get album artork for my ipod. Itunes does have a similar function but i only have a windows xp laptop that isnt supported by apple. So it *also* barely works.  
 
 # Before you start
 you will need to install python the following python packages:
