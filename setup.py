@@ -1,6 +1,6 @@
 from setuptools import setup
 
-APP = ['Artwork Downloader.py']  # Replace with the name of your Python script
+APP = ['main.py']  # Replace with the name of your Python script
 DATA_FILES = []
 OPTIONS = {
 	'argv_emulation': True,
