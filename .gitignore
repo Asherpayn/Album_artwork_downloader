@@ -2,3 +2,4 @@ spotifyapi.txt
 .cache
 /icon.icon/
 setup.py
+.DS_Store
