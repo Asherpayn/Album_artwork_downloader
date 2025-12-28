@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from io import BytesIO
 
 import requests
@@ -39,7 +40,9 @@ def get_spotify_credentials():
 		print("Using saved Spotify credentials.")
 		return creds["client_id"], creds["client_secret"]
 
+	sys.stdout.flush()
 	client_id = input(GREEN + "Your Spotify Client ID: " + RESET)
+	sys.stdout.flush()
 	client_secret = input(GREEN + "Your Spotify Client Secret: " + RESET)
 	save_credentials(client_id, client_secret)
 	return client_id, client_secret
@@ -76,6 +79,7 @@ def choose_album(albums):
 		print(color + f"{idx + 1}. {album['name']} by {album['artists'][0]['name']}" + RESET)
 
 	try:
+		sys.stdout.flush()
 		choice = int(input(GREEN + "Enter the number of the album you want to select: " + RESET)) - 1
 		if 0 <= choice < len(albums):
 			return albums[choice]
@@ -127,6 +131,7 @@ def main():
 			print(YELLOW + "Error: Unable to write to .cache file." + RESET)
 
 	while True:
+		sys.stdout.flush()
 		album_name = input(GREEN + "Enter the album name (or type 'exit' to quit): " + RESET).strip()
 		if album_name.lower() == 'exit':
 			print("Exiting the program.")
