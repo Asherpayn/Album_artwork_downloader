@@ -1,11 +1,18 @@
 import json
 import os
+import sys
 from io import BytesIO
 
 import requests
 import spotipy
 from PIL import Image
 from spotipy.oauth2 import SpotifyClientCredentials
+
+# Fix SSL certificate path for PyInstaller binary
+if getattr(sys, 'frozen', False):
+    import certifi
+    os.environ['SSL_CERT_FILE'] = os.path.join(sys._MEIPASS, 'certifi', 'cacert.pem')
+    os.environ['REQUESTS_CA_BUNDLE'] = os.path.join(sys._MEIPASS, 'certifi', 'cacert.pem')
 
 # ANSI escape codes for color formatting
 RED = "\033[91m"
