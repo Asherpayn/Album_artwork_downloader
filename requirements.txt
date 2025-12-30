@@ -1,3 +1,8 @@
+# Production dependencies
 spotipy>=2.22.0
 requests>=2.28.0
 Pillow>=9.0.0
+
+# Development dependencies (optional for testing)
+pytest>=7.0.0
+pytest-cov>=4.0.0
