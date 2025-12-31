@@ -1,6 +1,40 @@
+# Spotify credentials and cache
 spotifyapi.txt
 .cache
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec.bak
+*.tar.gz
+*.zip
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Icon directory
 /icon.icon/
-setup.py
-.DS_Store
-.DS_Store
