@@ -1,13 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
 # PyInstaller spec file for Album Artwork Downloader
-# Uses onedir mode for fast startup
+# Uses onedir mode for fast startup with SSL certificate support
+
+import certifi
 
 a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=['spotipy', 'requests', 'PIL'],
+    datas=[(certifi.where(), 'certifi')],
+    hiddenimports=['certifi', 'spotipy', 'requests', 'urllib3', 'PIL'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

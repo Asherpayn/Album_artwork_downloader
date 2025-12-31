@@ -7,6 +7,12 @@ from output import ConsoleOutput
 from spotify_client import SpotifyClient
 from album_service import AlbumSelector, AlbumDownloader, FilenameUtil
 
+# Fix SSL certificate path for PyInstaller binary
+if getattr(sys, 'frozen', False):
+    import certifi
+    os.environ['SSL_CERT_FILE'] = os.path.join(sys._MEIPASS, 'certifi', 'cacert.pem')
+    os.environ['REQUESTS_CA_BUNDLE'] = os.path.join(sys._MEIPASS, 'certifi', 'cacert.pem')
+
 
 class AlbumArtworkApp:
     """Main application class orchestrating all components."""
