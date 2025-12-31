@@ -1,16 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
-
+# PyInstaller spec file for Album Artwork Downloader
 
 a = Analysis(
-    ['main.py'],
+    ['app.py'],
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=[],
+    hiddenimports=['spotipy', 'requests', 'PIL'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    excludes=['pytest', 'pytest-cov'],
     noarchive=False,
     optimize=0,
 )
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='AlbumArtworkDownloader',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='icon.icon',
 )

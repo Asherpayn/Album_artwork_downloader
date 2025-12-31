@@ -1,16 +1,29 @@
-from setuptools import setup
+"""
+Album Artwork Downloader - Build Instructions
 
-APP = ['Main.py']  # The main application file
-DATA_FILES = []
-OPTIONS = {
-    'argv_emulation': True,
-    'packages': ['requests', 'spotipy', 'PIL'],  # Include necessary packages
-    'iconfile': 'icon.icon',  # Optional: path to your app icon
-}
+This project uses PyInstaller to create a standalone executable.
 
-setup(
-    app=APP,
-    data_files=DATA_FILES,
-    options={'py2app': OPTIONS},
-    setup_requires=['py2app'],
-)
+To build the executable:
+    1. Install PyInstaller: pip install pyinstaller
+    2. Run the build script: ./build.sh
+
+    Or manually: pyinstaller main.spec
+
+The executable will be created at: dist/AlbumArtworkDownloader
+
+To run:
+    ./dist/AlbumArtworkDownloader
+
+Configuration:
+    - Entry point: app.py
+    - Spec file: main.spec
+    - Icon: icon.icon
+    - Dependencies: See requirements.txt
+
+For development:
+    pip install -r requirements.txt
+    python app.py
+"""
+
+# This file is kept for reference but py2app has been replaced with PyInstaller
+# See main.spec for the PyInstaller configuration

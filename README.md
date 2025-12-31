@@ -40,10 +40,6 @@ You will need a Spotify account and API credentials:
 ### Running the Application
 
 ```bash
-# Run the application
-python3 Main.py
-
-# Or use the new modular entry point
 python3 app.py
 ```
 
@@ -76,28 +72,54 @@ pytest tests/ --cov=. --cov-report=html
 
 ## Building Executables
 
-### PyInstaller (Cross-platform)
+The project uses **PyInstaller** to create standalone executable binaries that can run without Python installed.
+
+### Quick Build
 
 ```bash
+# Run the build script (recommended)
+./build.sh
+```
+
+The script will:
+- Install PyInstaller if needed
+- Clean previous builds
+- Build the executable using the configured spec file
+- Report the output location
+
+### Manual Build
+
+```bash
+# Install PyInstaller
 pip3 install pyinstaller
+
+# Build using spec file
 pyinstaller main.spec
-# Executable will be in dist/ directory
+
+# Executable will be at: dist/AlbumArtworkDownloader
 ```
 
-### py2app (macOS only)
+### Running the Executable
 
 ```bash
-pip3 install py2app
-python3 setup.py py2app
-# App bundle will be in dist/ directory
+./dist/AlbumArtworkDownloader
 ```
+
+The executable is a single binary file that includes all dependencies (spotipy, requests, Pillow) - no Python installation required on the target machine!
+
+### Build Configuration
+
+- **Entry point**: `app.py`
+- **Spec file**: `main.spec` (PyInstaller configuration)
+- **Output name**: `AlbumArtworkDownloader`
+- **Icon**: `icon.icon`
+- **Build artifacts**: `build/` and `dist/` directories
 
 ## Architecture
 
 The application has been refactored into a modular architecture:
 
-- **Main.py** - Legacy entry point (backward compatible)
-- **app.py** - Main application orchestration
+- **app.py** - Main application orchestration and entry point
 - **config.py** - Configuration and credentials management
 - **output.py** - Console output utilities
 - **spotify_client.py** - Spotify API wrapper
