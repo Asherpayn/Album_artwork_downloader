@@ -2,8 +2,15 @@
 
 A program that allows you to download album artwork from Spotify, useful for adding artwork to mp3 files or albums on iPods.
 
-**my attempt at "vibe coding"**
+**My attempt at vibe coding**
 I created this as I needed to get album artwork for my iPod. iTunes does have a similar function but I only have a Windows XP laptop that isn't supported by Apple. So it *also* barely works.
+The following text and code will be 90% Claude-Code and 10% me looking through and changing a few bits.
+
+### Future features
+
+- [x] Rearrange everything to look more nicer, over the current massive monolith
+- [x] Add tests
+- [ ] add batch downloading from a text file (one album per line)
 
 ## Quick Start
 
@@ -47,7 +54,7 @@ On first run, you'll be prompted to enter your Spotify credentials. They'll be s
 
 ## Testing
 
-The application now includes a comprehensive test suite with 58 tests:
+The application now includes 58 tests:
 
 ```bash
 # Run all tests
@@ -72,7 +79,7 @@ pytest tests/ --cov=. --cov-report=html
 
 ## Building Executables
 
-The project uses **PyInstaller** to create standalone executable binaries that can run without Python installed.
+The project uses **PyInstaller** to create standalone executable applications that can run without Python installed.
 
 ### Quick Build
 
@@ -84,8 +91,9 @@ The project uses **PyInstaller** to create standalone executable binaries that c
 The script will:
 - Install PyInstaller if needed
 - Clean previous builds
-- Build the executable using the configured spec file
-- Report the output location
+- Build the application bundle using the configured spec file
+- Create a compressed `.tar.gz` archive for distribution
+- Report file sizes and locations
 
 ### Manual Build
 
@@ -96,54 +104,29 @@ pip3 install pyinstaller
 # Build using spec file
 pyinstaller main.spec
 
-# Executable will be at: dist/AlbumArtworkDownloader
+# Application will be at: dist/AlbumArtworkDownloader/
 ```
 
-### Running the Executable
+### Running Locally
 
 ```bash
-./dist/AlbumArtworkDownloader
+./dist/AlbumArtworkDownloader/AlbumArtworkDownloader
+```
+### Distribution
+
+The build creates `dist/AlbumArtworkDownloader.tar.gz` with maximum compression.
+
+**Installation (optional):**
+
+Add the folder to your PATH for easy access from anywhere:
+
+```bash
+# Extract to wherever you want
+tar -xzf AlbumArtworkDownloader.tar.gz
+mv AlbumArtworkDownloader ~/Applications/  # or anywhere
+
+# Add to PATH in ~/.zshrc
+export PATH="$HOME/Applications/AlbumArtworkDownloader:$PATH"
 ```
 
-The executable is a single binary file that includes all dependencies (spotipy, requests, Pillow) - no Python installation required on the target machine!
-
-### Build Configuration
-
-- **Entry point**: `app.py`
-- **Spec file**: `main.spec` (PyInstaller configuration)
-- **Output name**: `AlbumArtworkDownloader`
-- **Icon**: `icon.icon`
-- **Build artifacts**: `build/` and `dist/` directories
-
-## Architecture
-
-The application has been refactored into a modular architecture:
-
-- **app.py** - Main application orchestration and entry point
-- **config.py** - Configuration and credentials management
-- **output.py** - Console output utilities
-- **spotify_client.py** - Spotify API wrapper
-- **album_service.py** - Business logic services
-- **tests/** - Comprehensive test suite (58 tests)
-
-For detailed refactoring documentation, see [README_REFACTORING.md](README_REFACTORING.md)
-
-## Programmatic Usage
-
-You can now use the application as a library:
-
-```python
-from app import AlbumArtworkApp
-from output import ConsoleOutput
-from config import CredentialsManager
-
-# Create app instance
-output = ConsoleOutput()
-creds_manager = CredentialsManager()
-app = AlbumArtworkApp(output, creds_manager)
-
-# Search and download
-album = app.find_and_select_album("Abbey Road")
-if album:
-    app.download_album_artwork(album)
-```
+Then run with just: `AlbumArtworkDownloader`

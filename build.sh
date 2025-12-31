@@ -20,12 +20,27 @@ echo "📦 Building executable..."
 pyinstaller main.spec
 
 # Check if build was successful
-if [ -f "dist/AlbumArtworkDownloader" ]; then
+if [ -d "dist/AlbumArtworkDownloader" ]; then
     echo "✅ Build successful!"
-    echo "📍 Executable location: dist/AlbumArtworkDownloader"
+    echo "📍 Application location: dist/AlbumArtworkDownloader/"
     echo ""
-    echo "To run the application:"
-    echo "  ./dist/AlbumArtworkDownloader"
+
+    # Create compressed tarball for distribution
+    echo "🗜️  Creating compressed distribution archive (max compression)..."
+    cd dist
+    GZIP=-9 tar -czf AlbumArtworkDownloader.tar.gz AlbumArtworkDownloader/
+    cd ..
+
+    # Show file size
+    SIZE=$(du -h dist/AlbumArtworkDownloader.tar.gz | cut -f1)
+    echo "✅ Distribution archive created: dist/AlbumArtworkDownloader.tar.gz ($SIZE)"
+    echo ""
+    echo "To run locally:"
+    echo "  ./dist/AlbumArtworkDownloader/AlbumArtworkDownloader"
+    echo ""
+    echo "To distribute:"
+    echo "  Share dist/AlbumArtworkDownloader.tar.gz"
+    echo "  Recipients extract with: tar -xzf AlbumArtworkDownloader.tar.gz"
 else
     echo "❌ Build failed!"
     exit 1
