@@ -26,10 +26,6 @@ pip3 install -r requirements.txt
 - `requests>=2.28.0` - for making HTTP requests
 - `Pillow>=9.0.0` - for image processing
 
-**Optional (for testing):**
-- `pytest>=7.0.0` - test runner
-- `pytest-cov>=4.0.0` - test coverage reports
-
 ### Spotify API Setup
 
 You will need a Spotify account and API credentials:
